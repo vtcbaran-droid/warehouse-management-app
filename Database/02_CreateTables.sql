@@ -1,0 +1,52 @@
+-- SQL Script to Create Warehouse Management Tables
+
+CREATE TABLE Warehouses (
+    WarehouseID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(255) NOT NULL,
+    Location VARCHAR(255) NOT NULL,
+    Capacity INT NOT NULL,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Products (
+    ProductID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(255) NOT NULL,
+    Description TEXT,
+    Price DECIMAL(10, 2) NOT NULL,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Stock (
+    StockID INT PRIMARY KEY AUTO_INCREMENT,
+    WarehouseID INT,
+    ProductID INT,
+    Quantity INT NOT NULL,
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (WarehouseID) REFERENCES Warehouses(WarehouseID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY AUTO_INCREMENT,
+    WarehouseID INT,
+    OrderDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Status VARCHAR(50) NOT NULL,
+    FOREIGN KEY (WarehouseID) REFERENCES Warehouses(WarehouseID)
+);
+
+CREATE TABLE OrderItems (
+    OrderItemID INT PRIMARY KEY AUTO_INCREMENT,
+    OrderID INT,
+    ProductID INT,
+    Quantity INT NOT NULL,
+    Price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+CREATE TABLE Suppliers (
+    SupplierID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(255) NOT NULL,
+    ContactInfo VARCHAR(255),
+    CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
